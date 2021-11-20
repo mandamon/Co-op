@@ -5,12 +5,14 @@ using UnityEngine;
 public class MapSpawner : MonoBehaviour
 {
     [SerializeField]
-    private GameObject[] mapPrefabs;       // 맵 프리팹 배열
+    private GameObject[] mapPrefabs;        // 맵 프리팹 배열
     [SerializeField]
-    private int spawnMapCountAtStart = 3;  // 게임 시작시 최초 생성되는 맵 개수
+    private int spawnMapCountAtStart = 3;   // 게임 시작시 최초 생성되는 맵 개수
     [SerializeField]
-    private float zDistance = 100;           // 맵 사이의 거리(z)
-    private int mapIndex = 0;              // 맵 인덱스 (배치되는 맵의 z 위치 연산에 이용)
+    private float zDistance = 100;          // 맵 사이의 거리(z)
+    private int mapIndex = 0;               // 맵 인덱스 (배치되는 맵의 z 위치 연산에 이용)
+    [SerializeField]
+    private Transform playerTransform;      // 플레이어 transform
     private void Awake()
     {
         //spawnMapCountAtStart에 저장된 개수만큼 최소 맵 생성
@@ -41,6 +43,8 @@ public class MapSpawner : MonoBehaviour
         }
         // 맵이 배치되는 위치 설정 (z축은 현재 맵 인데스 * zDistance)
         clone.transform.position = new Vector3(0, 0, mapIndex * zDistance);
+        // 맵이 삭제될 때 새로운 맵을 생성할 수 있도록 this와 플레이어의 Transform 정보 전달
+        clone.GetComponent<Map>().Setup(this, playerTransform);
         mapIndex++;
     }
 }

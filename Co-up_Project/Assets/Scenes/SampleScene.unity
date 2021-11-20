@@ -156,6 +156,7 @@ MonoBehaviour:
   - {fileID: 4211753910439904056, guid: 64636ceda1d576e41807df0ade8be01e, type: 3}
   spawnMapCountAtStart: 3
   zDistance: 50
+  playerTransform: {fileID: 818318331}
 --- !u!4 &119546639
 Transform:
   m_ObjectHideFlags: 0
