@@ -9,16 +9,17 @@ public class InGameManager : MonoBehaviour
     [SerializeField] float moveSpeed;
     bool eaterMoveStart;
 
-
     public bool isgameOver;
-
-    
 
     public static InGameManager instance;
 
+    // ÄÚÀÎ
+    public int coinCount;
+    
     private void Awake()
     {
         instance = this;
+        coinCount = 0;
     }
     public void GameOver()
 
