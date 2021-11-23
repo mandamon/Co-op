@@ -200,6 +200,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapPrefabs:
   - {fileID: 4133017857096609865, guid: 3c251a6892e84f047972152add909b29, type: 3}
+  - {fileID: 150050353524498925, guid: 11b6d5517f083574c99f24fb812e21bf, type: 3}
+  - {fileID: 7177672213732055805, guid: ce43018968f13844b8365537726f5199, type: 3}
   spawnMapCountAtStart: 2
   zDistance: 10
   playerTransform: {fileID: 1277189251}

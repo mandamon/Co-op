@@ -74,7 +74,7 @@ public class MapSpawner : MonoBehaviour
         else
         {
             int index = Random.Range(0, mapPrefabs.Length);
-            clone = Instantiate(mapPrefabs[index]);// index]);
+            clone = Instantiate(mapPrefabs[index]);
         }
 
         if (prev_clone)
