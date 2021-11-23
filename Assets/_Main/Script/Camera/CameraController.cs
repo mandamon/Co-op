@@ -6,22 +6,26 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField]
     private Transform target;   // 카메라가 추적하는 대상
-    private float zDistance;
+
+    public float smoothSpeed = 0.125f;
+    public Vector3 offset;
     private void Awake()
     {
-        if(target != null)
-        {
-            zDistance = target.position.z - transform.position.z;
-        }
+       
     }
     private void LateUpdate()
     {
-        // target이 존재하지 않으면 실행하지 않는다
-        if (target == null) return;
+        if (target != null)
+        {
+            Vector3 targetPos = target.position;
+            targetPos.y = 0;
+            Vector3 desiredPos =targetPos+ (target.forward * offset.z)+new Vector3(0,offset.y,0);
+            Vector3 smoothPos = Vector3.Lerp(transform.position, desiredPos, smoothSpeed);
+            transform.position = smoothPos;
 
-        // 카메라의 위치(Position) 정보 갱신
-        Vector3 position = transform.position;
-        position.z = target.position.z - zDistance;
-        transform.position = position;
+
+            transform.rotation = target.rotation;
+            transform.Rotate(18, 180, 0);
+        }
     }
 }

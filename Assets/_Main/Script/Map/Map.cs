@@ -23,7 +23,16 @@ public class Map : MonoBehaviour
     {
         if (direction != 0)
         {
-            Instantiate(rotator, transform.position,Quaternion.identity);
+            GameObject temp=Instantiate(rotator, transform.position,transform.rotation);
+            if (direction == 1)
+            {
+                temp.transform.Rotate(0, 45, 0);
+            }
+            else
+            {
+                temp.transform.Rotate(0, -45, 0);
+            }
+            
         }
     }
 

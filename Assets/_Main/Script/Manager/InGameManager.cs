@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class InGameManager : MonoBehaviour
 {
+    [Header("GameConfig")]
+    [SerializeField] GameObject outCam;
+    [SerializeField] GameObject inCam;
+
     [Header("Eater")]
     [SerializeField] GameObject Eater;
     [SerializeField] float moveSpeed;
+    [SerializeField] float eaterStartTime = 5f;
+  
+
+
     bool eaterMoveStart;
 
     public bool isgameOver;
@@ -21,22 +29,27 @@ public class InGameManager : MonoBehaviour
         instance = this;
         coinCount = 0;
     }
+
+    private void Start()
+    {
+        StartCoroutine(OnStartEater());
+    }
+
+    IEnumerator OnStartEater()
+    {
+        yield return new WaitForSeconds(eaterStartTime);
+        Eater.SetActive(true);
+    }
     public void GameOver()
 
     {
         Debug.Log("게임 오버");
         isgameOver = true;
+
+       /* outCam.transform.position = inCam.transform.position;
+
+        inCam.SetActive(false);
+        outCam.SetActive(true);*/
     }
-    public void eaterStart()
-    {
-        Eater.SetActive(true);
-        eaterMoveStart = true;
-    }
-    private void Update()
-    {
-        if (eaterMoveStart)
-        {
-            Eater.transform.position += Vector3.forward * moveSpeed * Time.deltaTime;
-        }
-    }
+
 }

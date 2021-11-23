@@ -16,19 +16,15 @@ public class Coin : MonoBehaviour
         // 코인 오브젝트 회전
         transform.Rotate(Vector3.right * rotateSpeed * Time.deltaTime);
     }
-<<<<<<< HEAD
-=======
-    
->>>>>>> 08003a4eed44169f8dcf7cb8d2512d224058ce70
+
     private void OnTriggerEnter(Collider other)
     {
         // 코인 획득 효과 생성
         //GameObject clone = Instantiate(coinEffectPrefab);
         //clone.transform.position = transform.position;
-<<<<<<< HEAD
+
         // 코인 오브젝트 삭제
-        Destroy(gameObject);
-=======
+
         // 코인 계산
         if (other.gameObject.tag == "Player")
         {
@@ -36,7 +32,6 @@ public class Coin : MonoBehaviour
             // 코인 오브젝트 삭제
             Destroy(gameObject);
         }
-      
->>>>>>> 08003a4eed44169f8dcf7cb8d2512d224058ce70
+
     }
 }

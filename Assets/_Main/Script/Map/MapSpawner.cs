@@ -16,13 +16,17 @@ public class MapSpawner : MonoBehaviour
 
     GameObject prev_clone;
 
+    int prev_turn = -1;
+
     [SerializeField] float spawnTime = 1f;
-    [SerializeField] float destroyTime = 3f;
     bool canSpawn=true;
 
     float flowTIme;
-
     float prev_direction;
+
+    bool spawnTurn;
+
+    [SerializeField] float turnSpawnTime = 5f;
 
     private void Awake()
     {
@@ -31,7 +35,7 @@ public class MapSpawner : MonoBehaviour
         for (int i = 0; i < spawnMapCountAtStart; ++i)
         {
             // Ã¹ ¹øÂ° ¸ÊÀº Ç×»ó 2¹ø ¸Ê ÇÁ¸®ÆÕÀ¸·Î ¼³Á¤
-            if (i == 2)
+            if (i == 0)
             {
                 SpawnMap(false);
 
@@ -46,16 +50,27 @@ public class MapSpawner : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        StartCoroutine(onSpawnTurn());
+    }
+
+    IEnumerator onSpawnTurn()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(turnSpawnTime);
+            spawnTurn = true;
+        }
+        
+    }
+
     private void Update()
     {
         if (canSpawn && !InGameManager.instance.isgameOver)
             StartCoroutine(onSpawnMap());
 
-        flowTIme += Time.deltaTime;
-        if (flowTIme >= destroyTime)
-        {
-            InGameManager.instance.eaterStart();
-        }
+
     }
     IEnumerator onSpawnMap()
     {
@@ -71,12 +86,32 @@ public class MapSpawner : MonoBehaviour
 
         if(isRandom == false)
         {
-            clone = Instantiate(mapPrefabs[0]);
+            clone = Instantiate(mapPrefabs[2]);
         }
         else
         {
-            int index = Random.Range(0, mapPrefabs.Length);
-            clone = Instantiate(mapPrefabs[index]);
+
+            if (spawnTurn)
+            {
+                int index = Random.Range(0,2);
+                if (prev_turn == 0)
+                {
+                    index = 1;
+                }else if (prev_turn == 1)
+                {
+                    index = 0;
+                }
+                prev_turn = index;
+                clone = Instantiate(mapPrefabs[index]);
+                
+                spawnTurn = false;
+            }
+            else
+            {
+                int index = Random.Range(2, mapPrefabs.Length);
+                clone = Instantiate(mapPrefabs[index]);
+            }
+            
         }
 
         if (prev_clone)

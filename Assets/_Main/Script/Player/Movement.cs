@@ -8,7 +8,11 @@ public class Movement : MonoBehaviour
     // X축 이동(좌우)
     [SerializeField]private float moveXWidth = 1.5f;    // 1회 이동시 이동 거리
     private float moveTimeX = 0.1f;     // 1회 이동에 소요되는 시간
+    //[SerializeField] float moveSmooth = 1f;
     private bool isXMove = false;       // true : 이동 중, false : 이동 가능
+    public int rightmoveCnt = 0;
+    public int leftmoveCnt = 0;
+  
 
     // Y축 이동(점프)
     [SerializeField]private float originY = 0.55f;      // 점프 및 착지하는 y축 값
@@ -43,6 +47,9 @@ public class Movement : MonoBehaviour
     private Collider col;
 
     [SerializeField] GameObject plane;
+    bool isRotating;
+
+    bool isinRotator;
 
     private void Awake()
     {
@@ -59,18 +66,14 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
+        
         // Z축 이동(전진)
         if (canMove)
         { 
             //for Debug
-            if (isSlide)
-            {
-                transform.position += Vector3.forward * moveSpeed * Time.deltaTime;
-            }
-            else
-            {
+
                 transform.position += transform.forward * moveSpeed * Time.deltaTime;
-            }
+            
         }
             
 
@@ -94,23 +97,45 @@ public class Movement : MonoBehaviour
                 
             }
         }
+
+        if (isRotating)
+        {
+            canMove = false;
+            transform.rotation = Quaternion.Lerp(transform.rotation, plane.transform.rotation, Time.deltaTime * 10f);
+
+            if (transform.rotation == plane.transform.rotation)
+            {
+                isRotating = false;
+                canMove = true;
+            }
+        }
+
+
+
     }
 
  
     public void MoveToX(int x)
     {
-        
 
+        Debug.Log(x);
         // 현재 x축 이동 중으로 이동 불가능
         if(isXMove == true || isSlide || !canMove) return;
-
-        if(x > 0 && transform.position.x <= moveXWidth*2)
+     
+        if(x>0 && rightmoveCnt<2)
         {
-            StartCoroutine(OnMoveToX(-x)); //우 이동
+            rightmoveCnt++;
+            leftmoveCnt--;
+            MoveX(-x);
+            Debug.Log("plus");
         }
-        else if(x < 0 && transform.position.x >= -moveXWidth*2 )
+
+        if (x<0 && leftmoveCnt<2)
         {
-            StartCoroutine(OnMoveToX(-x)); //좌 이동
+            leftmoveCnt++;
+            rightmoveCnt--;
+            MoveX(-x);
+            Debug.Log("minus");
         }
     }
     public void MoveToY()
@@ -119,30 +144,57 @@ public class Movement : MonoBehaviour
         if (isJump == true || isSlide || !canMove) return;
         StartCoroutine(OnMoveToY());
     }
-    private IEnumerator OnMoveToX(int direction)
+
+    public void MoveX(int direction)
     {
-      
-        float current = 0;
-        float percent = 0;
-        float start = transform.position.x;
-        float end = transform.position.x + direction * moveXWidth;
-    
-        isXMove = true;
+        Vector3 targetpos = transform.position + (direction) * transform.right * moveXWidth;
+        StartCoroutine(Interpolate(transform, targetpos, moveTimeX));
+    }
 
-        while(percent < 1)
+    public IEnumerator Interpolate(Transform obj, Vector3 destination, float overTime)
+    {
+        Vector3 source = new Vector3(obj.position.x, obj.position.y, obj.position.z);//deep copy
+        float startTime = Time.time;
+        while (Time.time < startTime + overTime && obj != null)
         {
-            current += Time.deltaTime;
-            percent = current / moveTimeX;
-          
-
-            float x = Mathf.Lerp(start, end, percent);
-            transform.position = new Vector3(x, transform.position.y, transform.position.z);
-
+            obj.position = Vector3.Lerp(source, destination, (Time.time - startTime) / overTime);
             yield return null;
         }
-
-        isXMove = false;
+        obj.position = destination;
     }
+    /*    private IEnumerator OnMoveToX(int direction)
+        {
+
+            float current = 0;
+            float percent = 0;
+            float start = transform.position.x;
+            float end = transform.position.x + direction * moveXWidth;
+            isXMove = true;
+
+            while (percent < 1)
+            {
+                current += Time.deltaTime;
+                percent = current / moveTimeX;
+
+
+                float x = Mathf.Lerp(start, end, percent);
+                transform.position = new Vector3(x, transform.position.y, transform.position.z);
+
+                yield return null;
+            }
+
+
+    *//*        Vector3 targetpos = transform.position + (direction) * transform.right * moveXWidth;
+            while (transform.position != targetpos)
+            {
+                transform.position = Vector3.Lerp(transform.position, targetpos, moveSmooth * Time.deltaTime);
+            }
+            //transform.position = transform.position +(direction)*transform.right * moveXWidth;*//*
+
+            isXMove = false;
+
+        }*/
+
     private IEnumerator OnMoveToY()
     {
         float current = 0;
@@ -182,11 +234,11 @@ public class Movement : MonoBehaviour
     IEnumerator OnSlide()
     {
         Debug.Log("slide");
-        //anim.SetBool("doSlide",true);
-        transform.Rotate(-90, 0, 0);
+        anim.SetBool("doSlide",true);
+        //transform.Rotate(-90, 0, 0);
         yield return new WaitForSeconds(slideTime);
-        transform.Rotate(90, 0, 0);
-        //anim.SetBool("doSlide", false);
+        //transform.Rotate(90, 0, 0);
+        anim.SetBool("doSlide", false);
         isSlide = false;
     }
 
@@ -243,14 +295,25 @@ public class Movement : MonoBehaviour
             Destroy(gameObject);
         }else if (other.gameObject.tag == "rotator")
         {
-            if (plane)
+            if (plane && !isinRotator)
             {
-                Map map = plane.gameObject.GetComponent<Map>();
-                transform.rotation = plane.transform.rotation;
-                //transform.Rotate(0, 90 * map.direction, 0);
-               
+                isRotating = true;
+                isinRotator = true;
             }
 
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "rotator")
+        {
+            isinRotator = false;
         }
     }
 
