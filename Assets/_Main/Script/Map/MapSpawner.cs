@@ -16,11 +16,17 @@ public class MapSpawner : MonoBehaviour
 
     GameObject prev_clone;
 
+    int prev_turn = -1;
+
     [SerializeField] float spawnTime = 1f;
-    [SerializeField] float destroyTime = 3f;
     bool canSpawn=true;
 
     float flowTIme;
+    float prev_direction;
+
+    bool spawnTurn;
+
+    [SerializeField] float turnSpawnTime = 5f;
 
     private void Awake()
     {
@@ -28,7 +34,7 @@ public class MapSpawner : MonoBehaviour
         //spawnMapCountAtStart에 저장된 개수만큼 최소 맵 생성
         for (int i = 0; i < spawnMapCountAtStart; ++i)
         {
-            // 첫 번째 맵은 항상 0번 맵 프리팹으로 설정
+            // 첫 번째 맵은 항상 2번 맵 프리팹으로 설정
             if (i == 0)
             {
                 SpawnMap(false);
@@ -44,16 +50,27 @@ public class MapSpawner : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        StartCoroutine(onSpawnTurn());
+    }
+
+    IEnumerator onSpawnTurn()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(turnSpawnTime);
+            spawnTurn = true;
+        }
+        
+    }
+
     private void Update()
     {
         if (canSpawn && !InGameManager.instance.isgameOver)
             StartCoroutine(onSpawnMap());
 
-        flowTIme += Time.deltaTime;
-        if (flowTIme >= destroyTime)
-        {
-            InGameManager.instance.eaterStart();
-        }
+
     }
     IEnumerator onSpawnMap()
     {
@@ -69,17 +86,50 @@ public class MapSpawner : MonoBehaviour
 
         if(isRandom == false)
         {
-            clone = Instantiate(mapPrefabs[0]);
+            clone = Instantiate(mapPrefabs[2]);
         }
         else
         {
-            int index = Random.Range(0, mapPrefabs.Length);
-            clone = Instantiate(mapPrefabs[index]);
+
+            if (spawnTurn)
+            {
+                int index = Random.Range(0,2);
+                if (prev_turn == 0)
+                {
+                    index = 1;
+                }else if (prev_turn == 1)
+                {
+                    index = 0;
+                }
+                prev_turn = index;
+                clone = Instantiate(mapPrefabs[index]);
+                
+                spawnTurn = false;
+            }
+            else
+            {
+                int index = Random.Range(2, mapPrefabs.Length);
+                clone = Instantiate(mapPrefabs[index]);
+            }
+            
         }
 
         if (prev_clone)
         {
-            clone.transform.position = new Vector3(0, 0, prev_clone.transform.position.z + zDistance);
+            
+            
+           if (prev_direction == 1)
+            {
+                prev_clone.transform.Rotate(0, 90, 0);
+
+                //clone.transform.Rotate(0, 90, 0);
+            }
+            else if(prev_direction == -1)
+            {
+                prev_clone.transform.Rotate(0, -90, 0);
+            }
+            clone.transform.rotation = prev_clone.transform.rotation;
+            clone.transform.position = prev_clone.transform.position + prev_clone.transform.forward * zDistance;
         }
         else
         {
@@ -88,10 +138,11 @@ public class MapSpawner : MonoBehaviour
         // 맵이 배치되는 위치 설정 (z축은 현재 맵 인데스 * zDistance)
         
         // 맵이 삭제될 때 새로운 맵을 생성할 수 있도록 this와 플레이어의 Transform 정보 전달
-        clone.GetComponent<Map>().Setup(this, playerTransform);
+        //clone.GetComponent<Map>().Setup(this, playerTransform);
         //mapIndex++;
-        Destroy(clone, destroyTime);
+        //Destroy(clone, destroyTime);
         prev_clone = clone;
+        prev_direction = clone.GetComponent<Map>().direction;
     }
 
 

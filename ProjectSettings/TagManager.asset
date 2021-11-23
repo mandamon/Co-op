@@ -6,6 +6,8 @@ TagManager:
   tags:
   - obstructor
   - Eater
+  - plane
+  - rotator
   layers:
   - Default
   - TransparentFX
