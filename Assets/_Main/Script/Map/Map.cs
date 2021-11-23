@@ -9,7 +9,8 @@ public class Map : MonoBehaviour
     private MapSpawner mapSpawner;
     private Transform playerTransform;
 
-  
+    [SerializeField] public float direction;
+    [SerializeField] GameObject rotator;
 
 
     public void Setup(MapSpawner mapSpawner, Transform playerTransform)
@@ -20,7 +21,10 @@ public class Map : MonoBehaviour
 
     private void Start()
     {
-        
+        if (direction != 0)
+        {
+            Instantiate(rotator, transform.position,Quaternion.identity);
+        }
     }
 
 

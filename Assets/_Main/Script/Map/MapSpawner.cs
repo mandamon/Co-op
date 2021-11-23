@@ -22,14 +22,16 @@ public class MapSpawner : MonoBehaviour
 
     float flowTIme;
 
+    float prev_direction;
+
     private void Awake()
     {
         canSpawn = false;
         //spawnMapCountAtStart에 저장된 개수만큼 최소 맵 생성
         for (int i = 0; i < spawnMapCountAtStart; ++i)
         {
-            // 첫 번째 맵은 항상 0번 맵 프리팹으로 설정
-            if (i == 0)
+            // 첫 번째 맵은 항상 2번 맵 프리팹으로 설정
+            if (i == 2)
             {
                 SpawnMap(false);
 
@@ -74,12 +76,25 @@ public class MapSpawner : MonoBehaviour
         else
         {
             int index = Random.Range(0, mapPrefabs.Length);
-            clone = Instantiate(mapPrefabs[index]);// index]);
+            clone = Instantiate(mapPrefabs[index]);
         }
 
         if (prev_clone)
         {
-            clone.transform.position = new Vector3(0, 0, prev_clone.transform.position.z + zDistance);
+            
+            
+           if (prev_direction == 1)
+            {
+                prev_clone.transform.Rotate(0, 90, 0);
+
+                //clone.transform.Rotate(0, 90, 0);
+            }
+            else if(prev_direction == -1)
+            {
+                prev_clone.transform.Rotate(0, -90, 0);
+            }
+            clone.transform.rotation = prev_clone.transform.rotation;
+            clone.transform.position = prev_clone.transform.position + prev_clone.transform.forward * zDistance;
         }
         else
         {
@@ -88,10 +103,11 @@ public class MapSpawner : MonoBehaviour
         // 맵이 배치되는 위치 설정 (z축은 현재 맵 인데스 * zDistance)
         
         // 맵이 삭제될 때 새로운 맵을 생성할 수 있도록 this와 플레이어의 Transform 정보 전달
-        clone.GetComponent<Map>().Setup(this, playerTransform);
+        //clone.GetComponent<Map>().Setup(this, playerTransform);
         //mapIndex++;
-        Destroy(clone, destroyTime);
+        //Destroy(clone, destroyTime);
         prev_clone = clone;
+        prev_direction = clone.GetComponent<Map>().direction;
     }
 
 

@@ -42,6 +42,8 @@ public class Movement : MonoBehaviour
     private MeshRenderer render;
     private Collider col;
 
+    [SerializeField] GameObject plane;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -58,8 +60,19 @@ public class Movement : MonoBehaviour
     private void Update()
     {
         // Z축 이동(전진)
-        if(canMove)
-            transform.position += Vector3.forward * moveSpeed * Time.deltaTime;
+        if (canMove)
+        { 
+            //for Debug
+            if (isSlide)
+            {
+                transform.position += Vector3.forward * moveSpeed * Time.deltaTime;
+            }
+            else
+            {
+                transform.position += transform.forward * moveSpeed * Time.deltaTime;
+            }
+        }
+            
 
         // 오브젝트 회전 (X축 좌우)
         //transform.Rotate(Vector3.right * rotateSpeed * Time.deltaTime);
@@ -169,11 +182,11 @@ public class Movement : MonoBehaviour
     IEnumerator OnSlide()
     {
         Debug.Log("slide");
-        anim.SetBool("doSlide",true);
-
+        //anim.SetBool("doSlide",true);
+        transform.Rotate(-90, 0, 0);
         yield return new WaitForSeconds(slideTime);
-
-        anim.SetBool("doSlide", false);
+        transform.Rotate(90, 0, 0);
+        //anim.SetBool("doSlide", false);
         isSlide = false;
     }
 
@@ -210,7 +223,13 @@ public class Movement : MonoBehaviour
         render.material.color = bak;
         
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "plane")
+        {
+            plane = collision.gameObject;
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -222,6 +241,16 @@ public class Movement : MonoBehaviour
         {
             InGameManager.instance.GameOver();
             Destroy(gameObject);
+        }else if (other.gameObject.tag == "rotator")
+        {
+            if (plane)
+            {
+                Map map = plane.gameObject.GetComponent<Map>();
+                transform.rotation = plane.transform.rotation;
+                //transform.Rotate(0, 90 * map.direction, 0);
+               
+            }
+
         }
     }
 
