@@ -69,8 +69,6 @@ public class MapSpawner : MonoBehaviour
     {
         if (canSpawn && !InGameManager.instance.isgameOver)
             StartCoroutine(onSpawnMap());
-
-
     }
     IEnumerator onSpawnMap()
     {
@@ -83,7 +81,6 @@ public class MapSpawner : MonoBehaviour
     public void SpawnMap(bool isRandom = true)
     {
         GameObject clone = null;
-
         if(isRandom == false)
         {
             clone = Instantiate(mapPrefabs[2]);
