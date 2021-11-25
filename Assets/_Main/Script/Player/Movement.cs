@@ -129,13 +129,20 @@ public class Movement : MonoBehaviour
         // 현재 점프 중으로 점프 불가능
         if (isJump == true || isSlide || !canMove) return;
         StartCoroutine(OnMoveToY());
+        
     }
 
     public void MoveX(int direction)
     {
+     
         Vector3 targetpos = transform.position + (direction) * transform.right * moveXWidth;
         StartCoroutine(Interpolate(transform, targetpos, moveTimeX));
     }
+/*    public void MoveY()
+    {
+        Vector3 targetpos = transform.position + new Vector3(0,originY,0);
+        StartCoroutine(Interpolate(transform, targetpos, moveTimeY));
+    }*/
 
     public IEnumerator Interpolate(Transform obj, Vector3 destination, float overTime)
     {
@@ -148,10 +155,10 @@ public class Movement : MonoBehaviour
         }
         obj.position = destination;
     }
+
     public IEnumerator InterpolateRotate(Transform obj, Quaternion destination, float overTime)
     {
         canMove = false;
-
         Quaternion source = new Quaternion(obj.rotation.x, obj.rotation.y, obj.rotation.z, obj.rotation.w); ;//deep copy
         float startTime = Time.time;
         while (Time.time < startTime + overTime && obj != null)

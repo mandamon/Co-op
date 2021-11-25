@@ -17,7 +17,7 @@ public class Eater : MonoBehaviour
     public Quaternion atePlanerot;
 
     bool isRotating;
-    bool isinRotator;
+
     bool canMove=true;
 
     private void Update()
@@ -60,6 +60,23 @@ public class Eater : MonoBehaviour
 
     }
 
+    public IEnumerator InterpolateRotate(Transform obj, Quaternion destination, float overTime)
+    {
+        canMove = false;
+
+        Quaternion source = new Quaternion(obj.rotation.x, obj.rotation.y, obj.rotation.z, obj.rotation.w); ;//deep copy
+        float startTime = Time.time;
+        while (Time.time < startTime + overTime && obj != null)
+        {
+            obj.rotation = Quaternion.Lerp(source, destination, (Time.time - startTime) / overTime);
+            yield return null;
+        }
+        obj.rotation = destination;
+
+        canMove = true;
+
+     
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -70,11 +87,17 @@ public class Eater : MonoBehaviour
         else if (other.gameObject.tag == "rotator")
            
         {
-          /*  if (!isRotating)
-            {
-                isRotating = true;
-                Destroy(other.gameObject);
-            }*/
+        
+
+                StartCoroutine(InterpolateRotate(transform, atePlanerot, 0.5f));
+                //Debug.Log(plane.GetComponent<Map>().direction);
+             
+            
+            /*  if (!isRotating)
+              {
+                  isRotating = true;
+                  Destroy(other.gameObject);
+              }*/
 
         }
 
