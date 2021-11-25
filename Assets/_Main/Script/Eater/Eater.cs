@@ -10,6 +10,8 @@ public class Eater : MonoBehaviour
     public float smooth = 10f;
     RaycastHit hit;
 
+    [SerializeField] GameObject posses;
+
     public GameObject plane;
     public Vector3 atePlanepos;
     public Quaternion atePlanerot;
@@ -41,7 +43,7 @@ public class Eater : MonoBehaviour
         if (isRotating)
         {
             canMove = false;
-            transform.rotation = Quaternion.Lerp(transform.rotation, atePlanerot, Time.deltaTime * 10f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, atePlanerot, Time.deltaTime * 20f);
             if (transform.rotation == atePlanerot)
             {
                 isRotating = false;
@@ -49,6 +51,9 @@ public class Eater : MonoBehaviour
             }
             
         }
+
+        posses.transform.position = transform.position;
+        posses.transform.rotation = transform.rotation;
     }
 
 

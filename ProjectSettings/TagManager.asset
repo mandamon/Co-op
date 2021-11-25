@@ -8,6 +8,7 @@ TagManager:
   - Eater
   - plane
   - rotator
+  - summonObj
   layers:
   - Default
   - TransparentFX

@@ -7,12 +7,10 @@ public class Summon : MonoBehaviour
     [SerializeField]
     private GameObject obstacle;
     [SerializeField]
-    private Transform summonPos;
+    private Transform[] summonPos;
     private bool summonTurn = true;
     [SerializeField]
     private float summonTime = 3f;
-    [SerializeField]
-    private float summonSpeed;
 
     private void Update()
     {
@@ -29,9 +27,8 @@ public class Summon : MonoBehaviour
     private void summon()
     {
         // º“»Ø
-        GameObject summonObstacle = Instantiate(obstacle, summonPos.position, summonPos.rotation);
-        Rigidbody summonRigid = summonObstacle.GetComponent<Rigidbody>();
-        summonRigid.velocity = summonPos.forward * summonSpeed;
+        int ranidx = Random.Range(0, summonPos.Length);
+        GameObject summonObstacle = Instantiate(obstacle, summonPos[ranidx].position, summonPos[ranidx].rotation);
         summonTurn = false;
     }
 }

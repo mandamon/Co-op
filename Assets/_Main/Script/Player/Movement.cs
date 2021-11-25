@@ -38,7 +38,7 @@ public class Movement : MonoBehaviour
     bool isInvinclble; //무적상태
     [SerializeField] float notDeadTime = 3f;
 
-    bool canMove=true;
+    [SerializeField]  bool canMove=true;
     bool isknockBack;
 
     private Rigidbody rigid;
@@ -256,6 +256,16 @@ public class Movement : MonoBehaviour
         StartCoroutine(setKnockBack());
 
     }
+    public void knockDown()
+    {
+        Debug.Log("KnockDown");
+        canMove = false;
+
+        StartCoroutine(onKnockBack());
+        StartCoroutine(setKnockBack());
+
+    }
+
     IEnumerator setKnockBack()
     {
         yield return new WaitForSeconds(0.2f);
@@ -281,6 +291,11 @@ public class Movement : MonoBehaviour
         {
             plane = collision.gameObject;
         }
+        else if (collision.gameObject.tag == "summonObj")
+        {
+            if (!isInvinclble)
+                knockDown();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -293,7 +308,8 @@ public class Movement : MonoBehaviour
         {
             InGameManager.instance.GameOver();
             Destroy(gameObject);
-        }else if (other.gameObject.tag == "rotator")
+        }
+        else if (other.gameObject.tag == "rotator")
         {
             if (plane && !isinRotator)
             {
