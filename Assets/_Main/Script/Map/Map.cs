@@ -12,7 +12,7 @@ public class Map : MonoBehaviour
     [SerializeField] public float direction;
     [SerializeField] GameObject rotator;
 
-
+    [SerializeField] GameObject obsPos;
     public void Setup(MapSpawner mapSpawner, Transform playerTransform)
     {
         this.mapSpawner = mapSpawner;
@@ -49,6 +49,9 @@ public class Map : MonoBehaviour
             
             Destroy(gameObject);
         }*/
+
+
+     
     }
 
     

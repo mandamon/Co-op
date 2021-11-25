@@ -98,20 +98,6 @@ public class Movement : MonoBehaviour
             }
         }
 
-        if (isRotating)
-        {
-            canMove = false;
-            transform.rotation = Quaternion.Lerp(transform.rotation, plane.transform.rotation, Time.deltaTime * 10f);
-
-            if (transform.rotation == plane.transform.rotation)
-            {
-                isRotating = false;
-                canMove = true;
-            }
-        }
-
-
-
     }
 
  
@@ -162,38 +148,25 @@ public class Movement : MonoBehaviour
         }
         obj.position = destination;
     }
-    /*    private IEnumerator OnMoveToX(int direction)
+    public IEnumerator InterpolateRotate(Transform obj, Quaternion destination, float overTime)
+    {
+        canMove = false;
+
+        Quaternion source = new Quaternion(obj.rotation.x, obj.rotation.y, obj.rotation.z, obj.rotation.w); ;//deep copy
+        float startTime = Time.time;
+        while (Time.time < startTime + overTime && obj != null)
         {
+            obj.rotation = Quaternion.Lerp(source, destination, (Time.time - startTime) / overTime);
+            yield return null;
+        }
+        obj.rotation = destination;
 
-            float current = 0;
-            float percent = 0;
-            float start = transform.position.x;
-            float end = transform.position.x + direction * moveXWidth;
-            isXMove = true;
-
-            while (percent < 1)
-            {
-                current += Time.deltaTime;
-                percent = current / moveTimeX;
+        canMove = true;
+     
+        isinRotator = true;
+    }
 
 
-                float x = Mathf.Lerp(start, end, percent);
-                transform.position = new Vector3(x, transform.position.y, transform.position.z);
-
-                yield return null;
-            }
-
-
-    *//*        Vector3 targetpos = transform.position + (direction) * transform.right * moveXWidth;
-            while (transform.position != targetpos)
-            {
-                transform.position = Vector3.Lerp(transform.position, targetpos, moveSmooth * Time.deltaTime);
-            }
-            //transform.position = transform.position +(direction)*transform.right * moveXWidth;*//*
-
-            isXMove = false;
-
-        }*/
 
     private IEnumerator OnMoveToY()
     {
@@ -311,8 +284,11 @@ public class Movement : MonoBehaviour
         }
         else if (other.gameObject.tag == "rotator")
         {
+            Debug.Log("rotator");
             if (plane && !isinRotator)
             {
+                StartCoroutine(InterpolateRotate(transform,plane.transform.rotation, 0.5f));
+                Debug.Log(plane.GetComponent<Map>().direction);
                 isRotating = true;
                 isinRotator = true;
             }

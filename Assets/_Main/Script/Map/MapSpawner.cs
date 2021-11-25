@@ -117,13 +117,13 @@ public class MapSpawner : MonoBehaviour
             
            if (prev_direction == 1)
             {
-                prev_clone.transform.Rotate(0, 90, 0);
+                prev_clone.transform.rotation *= Quaternion.AngleAxis(90f, Vector3.up);
 
                 //clone.transform.Rotate(0, 90, 0);
             }
             else if(prev_direction == -1)
             {
-                prev_clone.transform.Rotate(0, -90, 0);
+                prev_clone.transform.rotation *= Quaternion.AngleAxis(-90f, Vector3.up);
             }
             clone.transform.rotation = prev_clone.transform.rotation;
             clone.transform.position = prev_clone.transform.position + prev_clone.transform.forward * zDistance;
@@ -139,7 +139,7 @@ public class MapSpawner : MonoBehaviour
         //mapIndex++;
         //Destroy(clone, destroyTime);
         prev_clone = clone;
-        prev_direction = clone.GetComponent<Map>().direction;
+        prev_direction = clone.GetComponentInChildren<Map>().direction;
     }
 
 

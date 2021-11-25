@@ -39,7 +39,7 @@ public class Eater : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, atePlanepos, smooth * Time.deltaTime);
         }
-
+/*
         if (isRotating)
         {
             canMove = false;
@@ -50,10 +50,14 @@ public class Eater : MonoBehaviour
                 canMove = true;
             }
             
-        }
+
+        }*/
+
+        //}
 
         posses.transform.position = transform.position;
         posses.transform.rotation = transform.rotation;
+
     }
 
 
@@ -61,17 +65,16 @@ public class Eater : MonoBehaviour
     {
         if (other.gameObject.tag == "plane")
         {
-            
-            Destroy(other.gameObject);
+            Destroy(other.gameObject.transform.parent.gameObject);
         }
         else if (other.gameObject.tag == "rotator")
            
         {
-            if (!isRotating)
+          /*  if (!isRotating)
             {
                 isRotating = true;
                 Destroy(other.gameObject);
-            }
+            }*/
 
         }
 
