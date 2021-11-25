@@ -8,29 +8,30 @@ public class Summon : MonoBehaviour
     private GameObject obstacle;
     [SerializeField]
     private Transform summonPos;
-    private bool summonTurn;
+    private bool summonTurn = true;
     [SerializeField]
     private float summonTime = 3f;
+    [SerializeField]
+    private float summonSpeed;
 
     private void Update()
     {
-        if(!InGameManager.instance.isgameOver)
-            StartCoroutine(onSummon()); 
+        if(summonTurn && !InGameManager.instance.isgameOver)
+            StartCoroutine(onSummon());
     }
 
     IEnumerator onSummon()
     {
-        summonTurn = true;
-        if(summonTurn)
-            summon();
+        summon();
         yield return new WaitForSeconds(summonTime);
+        summonTurn = true;
     }
     private void summon()
     {
         // º“»Ø
         GameObject summonObstacle = Instantiate(obstacle, summonPos.position, summonPos.rotation);
         Rigidbody summonRigid = summonObstacle.GetComponent<Rigidbody>();
-        summonRigid.velocity = summonPos.forward * 10;
+        summonRigid.velocity = summonPos.forward * summonSpeed;
         summonTurn = false;
     }
 }
