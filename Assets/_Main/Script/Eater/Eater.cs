@@ -19,6 +19,7 @@ public class Eater : MonoBehaviour
     bool isRotating;
 
     bool canMove=true;
+    public float moveSpeed=5f;
 
     private void Update()
     {
@@ -30,30 +31,14 @@ public class Eater : MonoBehaviour
 
                 atePlanepos = plane.transform.position;
                 atePlanerot = plane.transform.rotation;
-
-               
             }
         }
 
         if (canMove)
         {
-            transform.position = Vector3.Lerp(transform.position, atePlanepos, smooth * Time.deltaTime);
+            /*transform.position = Vector3.Lerp(transform.position, atePlanepos, smooth * Time.deltaTime);*/
+            transform.position += transform.forward * moveSpeed * Time.deltaTime;
         }
-/*
-        if (isRotating)
-        {
-            canMove = false;
-            transform.rotation = Quaternion.Lerp(transform.rotation, atePlanerot, Time.deltaTime * 20f);
-            if (transform.rotation == atePlanerot)
-            {
-                isRotating = false;
-                canMove = true;
-            }
-            
-
-        }*/
-
-        //}
 
         posses.transform.position = transform.position;
         posses.transform.rotation = transform.rotation;

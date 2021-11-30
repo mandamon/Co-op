@@ -380,6 +380,10 @@ MonoBehaviour:
   - 0
   - 2
   - 4
+  randomy:
+  - 0.5
+  - 2
+  percent: 10
 --- !u!1 &3286490820655439391
 GameObject:
   m_ObjectHideFlags: 0
