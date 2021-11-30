@@ -29,6 +29,7 @@ public class Summon : MonoBehaviour
         // º“»Ø
         int ranidx = Random.Range(0, summonPos.Length);
         GameObject summonObstacle = Instantiate(obstacle, summonPos[ranidx].position, summonPos[ranidx].rotation);
+
         summonTurn = false;
     }
 }

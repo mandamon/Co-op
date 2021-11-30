@@ -8,16 +8,24 @@ public class SummonObj : MonoBehaviour
     private float summonObjSpeed;
     [SerializeField]
     private float objDisappear = -5f; //SummonObj 사라지는 y 위치
-    [SerializeField]
-    private float rotatespeed = 0.5f;
+
 
     GameObject plane;
+
     bool isRotating;
     bool isinRotator;
+
+    Rigidbody rigid;
+
+    private void Awake()
+    {
+        rigid = GetComponent<Rigidbody>();
+    }
+
     void Update()
     {
         transform.position += transform.forward * summonObjSpeed * Time.deltaTime;
-        transform.Rotate(0, 0, rotatespeed, Space.Self);
+       
         if(transform.position.y < objDisappear)
         {
             Destroy(gameObject);
@@ -40,6 +48,8 @@ public class SummonObj : MonoBehaviour
         if(collision.gameObject.tag == "plane")
         {
             plane = collision.gameObject;
+            rigid.useGravity = false;
+            
         }
     }
     private void OnTriggerEnter(Collider other)

@@ -13,7 +13,7 @@ public class ObstructorSpawner : MonoBehaviour
 
     private void Start()
     {
-        spawnObstructor();
+        //spawnObstructor();
     }
 
     private void spawnObstructor()

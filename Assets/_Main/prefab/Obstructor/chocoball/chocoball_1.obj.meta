@@ -3,7 +3,12 @@ guid: 355b37bef525cd24c8fca767838d6169
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: high_ballMat
+    second: {fileID: 2100000, guid: c1f4c2f35daf25a4f8591eec9195cc39, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

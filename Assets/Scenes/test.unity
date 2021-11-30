@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 900761562}
-  smoothSpeed: 0.125
+  smoothSpeed: 1
   offset: {x: 0, y: 5, z: 14}
 --- !u!81 &733360542
 AudioListener:
@@ -630,8 +630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 902556df049223a4eb04157e31e9af2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacle: {fileID: 7250860055648584736, guid: 7ce485f93bc46cd4fabd3defe158a7aa,
-    type: 3}
+  obstacle: {fileID: 989824879576677527, guid: c9284155c4ea4674f968416d4bdb06a2, type: 3}
   summonPos:
   - {fileID: 59041442}
   - {fileID: 1364207937}
@@ -945,7 +944,7 @@ MonoBehaviour:
   - {fileID: 3802339667985705814, guid: 22fc1463b4f24f64c89778ffa5d9f213, type: 3}
   - {fileID: 3097724788060567198, guid: 64636ceda1d576e41807df0ade8be01e, type: 3}
   spawnMapCountAtStart: 2
-  zDistance: 10
+  zDistance: 12
   playerTransform: {fileID: 900761562}
   spawnTime: 1
   turnSpawnTime: 10
