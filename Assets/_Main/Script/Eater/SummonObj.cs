@@ -15,6 +15,8 @@ public class SummonObj : MonoBehaviour
     bool isRotating;
     bool isinRotator;
 
+    bool canMove = true;
+
     Rigidbody rigid;
 
     private void Awake()
@@ -24,8 +26,10 @@ public class SummonObj : MonoBehaviour
 
     void Update()
     {
-        transform.position += transform.forward * summonObjSpeed * Time.deltaTime;
-       
+        if (canMove)
+        {
+            transform.position += transform.forward * summonObjSpeed * Time.deltaTime;
+        }
         if(transform.position.y < objDisappear)
         {
             Destroy(gameObject);
@@ -33,6 +37,7 @@ public class SummonObj : MonoBehaviour
     }
     public IEnumerator InterpolateRotate(Transform obj, Quaternion destination, float overTime)
     {
+        canMove = false;
         Quaternion source = new Quaternion(obj.rotation.x, obj.rotation.y, obj.rotation.z, obj.rotation.w);
         float startTime = Time.time;
         while (Time.time < startTime + overTime && obj != null)
@@ -41,6 +46,7 @@ public class SummonObj : MonoBehaviour
             yield return null;
         }
         obj.rotation = destination;
+        canMove = true;
         isinRotator = true;
     }
     private void OnCollisionEnter(Collision collision)
