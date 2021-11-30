@@ -87,8 +87,6 @@ public class Eater : MonoBehaviour
         else if (other.gameObject.tag == "rotator")
            
         {
-        
-
                 StartCoroutine(InterpolateRotate(transform, atePlanerot, 0.5f));
                 //Debug.Log(plane.GetComponent<Map>().direction);
              
