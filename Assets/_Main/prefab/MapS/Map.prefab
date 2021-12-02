@@ -386,7 +386,16 @@ MonoBehaviour:
   - 0.5
   - 2
   - 4
-  percent: 10
+  obstructor_percent: 0
+  candyroll: {fileID: 8517351425210277665, guid: cc03a1f3a54c6ef4d855973a031df144,
+    type: 3}
+  candyroll_percent: 50
+  candyrollPoses:
+  - {fileID: 4130110109921903133}
+  - {fileID: 1524440954880869758}
+  - {fileID: 5309036873022675276}
+  - {fileID: 3881898709643814450}
+  - {fileID: 2826901172956660947}
 --- !u!1 &3286490820655439391
 GameObject:
   m_ObjectHideFlags: 0

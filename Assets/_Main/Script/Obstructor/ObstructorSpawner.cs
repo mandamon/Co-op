@@ -16,11 +16,11 @@ public class ObstructorSpawner : MonoBehaviour
 
     [SerializeField] GameObject candyroll;
     [SerializeField] int candyroll_percent;
-    [SerializeField] Transform[] candyrollPoses;
 
     private void Start()
     {
         spawnObstructor();
+        spawnCandyRoll();
     }
 
     private void spawnObstructor()
@@ -58,11 +58,11 @@ public class ObstructorSpawner : MonoBehaviour
     }
     private void spawnCandyRoll()
     {
-        int ranPosidx = Random.Range(0, poses.Length);
         int temp_per = Random.Range(0, 100);
         if(temp_per <= candyroll_percent)
         {
-            Instantiate(candyroll, poses[ranPosidx]);
+            candyrollPos = poses[2].position + new Vector3(0, 0.75f, 0);
+            Instantiate(candyroll, candyrollPos);
         }
     }
 }

@@ -281,16 +281,6 @@ public class Movement : MonoBehaviour
             plane = collision.gameObject;
 
         }
-        else if (collision.gameObject.tag == "summonObj")
-        {
-            if (!isInvinclble)
-                knockDown();
-        }
-        else if (collision.gameObject.tag == "candyroll")
-        {
-            if (!isInvinclble)
-                knockBack();
-        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -299,11 +289,16 @@ public class Movement : MonoBehaviour
         {
             if(!isInvinclble)
                 knockBack();
+        }else if (other.gameObject.tag =="summonObj")
+        {
+            if (!isInvinclble)
+                knockDown();
         }else if (other.gameObject.tag == "Eater")
         {
             InGameManager.instance.GameOver();
             Destroy(gameObject);
-        }else if (other.gameObject.tag == "rotator")
+        }
+        else if (other.gameObject.tag == "rotator")
         {
             Debug.Log("Rotating");
             if (plane)
@@ -314,8 +309,4 @@ public class Movement : MonoBehaviour
         }
 
     }
-
-
-
-
 }
