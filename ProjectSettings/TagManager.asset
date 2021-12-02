@@ -9,6 +9,7 @@ TagManager:
   - plane
   - rotator
   - summonObj
+  - planeParent
   layers:
   - Default
   - TransparentFX

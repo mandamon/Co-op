@@ -141,5 +141,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyDistance: 15
   direction: 1
-  rotator: {fileID: 6600027705774419937, guid: f720d529c1a1b864c8d2c5074da83170, type: 3}
+  rotator: {fileID: 2213420677604520321, guid: f720d529c1a1b864c8d2c5074da83170, type: 3}
   obsPos: {fileID: 0}
+  player: {fileID: 0}

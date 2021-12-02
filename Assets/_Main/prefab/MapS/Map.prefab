@@ -177,6 +177,7 @@ MonoBehaviour:
   direction: 0
   rotator: {fileID: 0}
   obsPos: {fileID: 1082133582722073684}
+  player: {fileID: 0}
 --- !u!1 &2797285853087096819
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,8 +288,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyDistance: 15
   direction: 0
-  rotator: {fileID: 0}
+  rotator: {fileID: 2213420677604520321, guid: f720d529c1a1b864c8d2c5074da83170, type: 3}
   obsPos: {fileID: 1082133582722073684}
+  player: {fileID: 0}
 --- !u!1 &2803731679333912744
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,6 +498,7 @@ MonoBehaviour:
   direction: 0
   rotator: {fileID: 0}
   obsPos: {fileID: 1082133582722073684}
+  player: {fileID: 0}
 --- !u!1 &3550833634793128715
 GameObject:
   m_ObjectHideFlags: 0

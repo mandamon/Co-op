@@ -29,10 +29,12 @@ public class Movement : MonoBehaviour
     [SerializeField] float slideTime = 1.0f;
 
     // 회전
-    private float rotateSpeed = 300.0f; // 회전 속도
 
+
+    //추락
     private float limitY = -1.0f;       // 플레이어가 사망하는 y 위치
-
+    
+    //넉백
     [SerializeField] float basicY =1f;
     [Range(10f,40f)] public float knockBackforce = 20f;
     bool isInvinclble; //무적상태
@@ -46,10 +48,10 @@ public class Movement : MonoBehaviour
     private MeshRenderer render;
     private Collider col;
 
+    //plane값 저장
     [SerializeField] GameObject plane;
-    bool isRotating;
-
-    bool isinRotator;
+    [SerializeField] Vector3 rotPos;
+  
 
     private void Awake()
     {
@@ -67,7 +69,7 @@ public class Movement : MonoBehaviour
     private void Update()
     {
         
-        // Z축 이동(전진)
+        // (전진)
         if (canMove)
         { 
             //for Debug
@@ -98,9 +100,14 @@ public class Movement : MonoBehaviour
             }
         }
 
+
+
     }
 
- 
+    public Vector3 setExactPos(Vector3 pos)
+    {
+        return new Vector3(Mathf.Round(pos.x), Mathf.Round(pos.y), Mathf.Round(pos.z));
+    }
     public void MoveToX(int x)
     {
 
@@ -168,9 +175,11 @@ public class Movement : MonoBehaviour
         }
         obj.rotation = destination;
 
+        transform.position = setExactPos(transform.position);
+
         canMove = true;
-     
-        isinRotator = true;
+       
+
     }
 
 
@@ -270,6 +279,7 @@ public class Movement : MonoBehaviour
         if (collision.gameObject.tag == "plane")
         {
             plane = collision.gameObject;
+
         }
         else if (collision.gameObject.tag == "summonObj")
         {
@@ -288,33 +298,19 @@ public class Movement : MonoBehaviour
         {
             InGameManager.instance.GameOver();
             Destroy(gameObject);
-        }
-        else if (other.gameObject.tag == "rotator")
+        }else if (other.gameObject.tag == "rotator")
         {
-            Debug.Log("rotator");
-            if (plane && !isinRotator)
+            Debug.Log("Rotating");
+            if (plane)
             {
-                StartCoroutine(InterpolateRotate(transform,plane.transform.rotation, 0.5f));
-                Debug.Log(plane.GetComponent<Map>().direction);
-                isRotating = true;
-                isinRotator = true;
+                StartCoroutine(InterpolateRotate(transform, plane.transform.rotation, 0.5f));
             }
-
+           
         }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
 
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "rotator")
-        {
-            isinRotator = false;
-        }
-    }
+
 
 
 }

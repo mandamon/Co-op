@@ -16,7 +16,8 @@ public class Eater : MonoBehaviour
     public Vector3 atePlanepos;
     public Quaternion atePlanerot;
 
-    bool isRotating;
+    bool havetoRotate;
+    [SerializeField] Vector3 rotPos;
 
     bool canMove=true;
     public float moveSpeed=5f;
@@ -34,6 +35,18 @@ public class Eater : MonoBehaviour
             }
         }
 
+
+        if (havetoRotate)
+        {
+            //Debug.Log(Vector3.Distance(transform.position, rotPos));
+            if (Vector3.Distance(transform.position, rotPos) < 0.1f)
+            {
+                //Debug.Log("Rotating");
+                StartCoroutine(InterpolateRotate(transform, atePlanerot, 0.5f));
+            }
+        }
+
+
         if (canMove)
         {
             /*transform.position = Vector3.Lerp(transform.position, atePlanepos, smooth * Time.deltaTime);*/
@@ -43,6 +56,11 @@ public class Eater : MonoBehaviour
         posses.transform.position = transform.position;
         posses.transform.rotation = transform.rotation;
 
+    }
+
+    public Vector3 setExactPos(Vector3 pos)
+    {
+        return new Vector3(Mathf.Round(pos.x), Mathf.Round(pos.y), Mathf.Round(pos.z));
     }
 
     public IEnumerator InterpolateRotate(Transform obj, Quaternion destination, float overTime)
@@ -58,8 +76,11 @@ public class Eater : MonoBehaviour
         }
         obj.rotation = destination;
 
-        canMove = true;
+        //위치를 정수값으로 변경
+        transform.position = setExactPos(transform.position);
 
+        canMove = true;
+        havetoRotate = false;
      
     }
 
@@ -67,22 +88,20 @@ public class Eater : MonoBehaviour
     {
         if (other.gameObject.tag == "plane")
         {
-            Destroy(other.gameObject.transform.parent.gameObject);
-        }
-        else if (other.gameObject.tag == "rotator")
-           
-        {
-                StartCoroutine(InterpolateRotate(transform, atePlanerot, 0.5f));
-                //Debug.Log(plane.GetComponent<Map>().direction);
-             
+            Map temp_map = other.gameObject.GetComponent<Map>();
             
-            /*  if (!isRotating)
-              {
-                  isRotating = true;
-                  Destroy(other.gameObject);
-              }*/
+            if (temp_map.direction != 0) //회전 맵이라면
+            {
+                rotPos = other.gameObject.transform.position;
+                havetoRotate = true;
 
+            }
+            Destroy(other.gameObject.transform.parent.gameObject);
+        }else if(other.gameObject.tag == "rotator")
+        {
+            Destroy(other.gameObject);
         }
+
 
 
     }

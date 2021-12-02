@@ -13,6 +13,8 @@ public class Map : MonoBehaviour
     [SerializeField] GameObject rotator;
 
     [SerializeField] GameObject obsPos;
+
+    [SerializeField] public GameObject player;
     public void Setup(MapSpawner mapSpawner, Transform playerTransform)
     {
         this.mapSpawner = mapSpawner;
@@ -24,6 +26,8 @@ public class Map : MonoBehaviour
         if (direction != 0)
         {
             GameObject temp=Instantiate(rotator, transform.position,transform.rotation);
+
+            //Instantiate(rotators[1], transform.position, transform.rotation);
             if (direction == 1)
             {
                 temp.transform.Rotate(0, 45, 0);
@@ -32,25 +36,14 @@ public class Map : MonoBehaviour
             {
                 temp.transform.Rotate(0, -45, 0);
             }
-            
+
         }
     }
 
 
     private void Update()
     {
-        //transform.position += Vector3.forward *5.0f * Time.deltaTime;
-
-        /*if (playerTransform.position.z - transform.position.z >= destroyDistance) //멀어지면 삭제
-        {
-            // 새로운 맵을 생성
-            mapSpawner.SpawnMap();
-            // 현재 구역은 삭제
-            
-            Destroy(gameObject);
-        }*/
-
-
+  
      
     }
 
