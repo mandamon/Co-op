@@ -286,6 +286,11 @@ public class Movement : MonoBehaviour
             if (!isInvinclble)
                 knockDown();
         }
+        else if (collision.gameObject.tag == "candyroll")
+        {
+            if (!isInvinclble)
+                knockBack();
+        }
     }
 
     private void OnTriggerEnter(Collider other)

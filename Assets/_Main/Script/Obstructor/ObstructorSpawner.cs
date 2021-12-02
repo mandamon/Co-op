@@ -7,16 +7,20 @@ public class ObstructorSpawner : MonoBehaviour
     [SerializeField] GameObject[] obstructor;
     [SerializeField] Transform[] poses;
 
-    [SerializeField ]float[] randomz;
+    [SerializeField]float[] randomz;
     [SerializeField] float[] randomy;
 
-    [SerializeField] int percent;
+    [SerializeField] int obstructor_percent;
 
     private GameObject obstructorObj;
 
+    [SerializeField] GameObject candyroll;
+    [SerializeField] int candyroll_percent;
+    [SerializeField] Transform[] candyrollPoses;
+
     private void Start()
     {
-        //spawnObstructor();
+        spawnObstructor();
     }
 
     private void spawnObstructor()
@@ -28,14 +32,14 @@ public class ObstructorSpawner : MonoBehaviour
 
         if (ranidx == 0) //지상형 장애물
         {
-            ranyidx = Random.Range(0, randomy.Length-1);
+            ranyidx = Random.Range(0, randomy.Length - 1);
 
             obstructorObj = Instantiate(obstructor[ranidx], poses[ranPosidx]);
             //랜덤한 확률로 움직인다
             if (ranPosidx == 1 || ranPosidx == 2 || ranPosidx == 3)
             {
                 int temp_per = Random.Range(0, 100);
-                if (temp_per <= percent)
+                if (temp_per <= obstructor_percent)
                 {
                     obstructorObj.GetComponent<obstructor>().move = true;
                 }
@@ -46,10 +50,19 @@ public class ObstructorSpawner : MonoBehaviour
         {
 
         }
-        
-       
-        obstructorObj.transform.localPosition= new Vector3(0, randomy[ranyidx], randomz[ranzidx]);
+
+
+        obstructorObj.transform.localPosition = new Vector3(0, randomy[ranyidx], randomz[ranzidx]);
         //obstructorObj.transform.parent = poses[ranPosidx].transform.parent;
 
+    }
+    private void spawnCandyRoll()
+    {
+        int ranPosidx = Random.Range(0, poses.Length);
+        int temp_per = Random.Range(0, 100);
+        if(temp_per <= candyroll_percent)
+        {
+            Instantiate(candyroll, poses[ranPosidx]);
+        }
     }
 }
