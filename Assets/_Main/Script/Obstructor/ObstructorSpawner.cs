@@ -24,19 +24,29 @@ public class ObstructorSpawner : MonoBehaviour
         int ranidx = Random.Range(0, obstructor.Length);
         int ranPosidx = Random.Range(0, poses.Length);
         int ranzidx=Random.Range(0, randomz.Length);
-        int ranyidx = Random.Range(0, randomy.Length);
+        int ranyidx=-1;
 
-        obstructorObj = Instantiate(obstructor[ranidx], poses[ranPosidx]);
-        //랜덤한 확률로 움직인다
-        if (ranPosidx == 1 || ranPosidx==2 || ranPosidx == 3)
+        if (ranidx == 0) //지상형 장애물
         {
-            int temp_per = Random.Range(0, 100);
-            if (temp_per <= percent)
+            ranyidx = Random.Range(0, randomy.Length-1);
+
+            obstructorObj = Instantiate(obstructor[ranidx], poses[ranPosidx]);
+            //랜덤한 확률로 움직인다
+            if (ranPosidx == 1 || ranPosidx == 2 || ranPosidx == 3)
             {
-                obstructorObj.GetComponent<obstructor>().move = true;
+                int temp_per = Random.Range(0, 100);
+                if (temp_per <= percent)
+                {
+                    obstructorObj.GetComponent<obstructor>().move = true;
+                }
+
             }
-            
         }
+        else //공중형 장애물
+        {
+
+        }
+        
        
         obstructorObj.transform.localPosition= new Vector3(0, randomy[ranyidx], randomz[ranzidx]);
         //obstructorObj.transform.parent = poses[ranPosidx].transform.parent;

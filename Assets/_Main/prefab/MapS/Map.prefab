@@ -385,6 +385,7 @@ MonoBehaviour:
   randomy:
   - 0.5
   - 2
+  - 4
   percent: 10
 --- !u!1 &3286490820655439391
 GameObject:
